@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from "react-native";
+import {View, StyleSheet} from "react-native";
 import CalenderRoot from "./calender/CalenderRoot";
 
 export default class OutlookRoot extends Component {

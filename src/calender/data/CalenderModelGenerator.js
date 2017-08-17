@@ -3,14 +3,15 @@ import Constants from "../constants/Constants";
 export default class CalenderModelGenerator {
     constructor() {
         let currentDate = new Date();
-        this._startDate = new Date(currentDate.getFullYear() - 1, 1)
-        this._endDate = new Date(currentDate.getFullYear() + 1, 1);
+        this._startDate = new Date(currentDate.getFullYear() - 1, 1, 1, 0, 0, 0)
+        this._endDate = new Date(currentDate.getFullYear() + 1, 1, 1, 0, 0, 0);
         this._model = [];
+        this._initialCompute();
     }
 
     _initialCompute() {
-        let startMS = this._startDate.getMilliseconds();
-        let endMS = this._endDate.getMilliseconds();
+        let startMS = this._startDate.getTime();
+        let endMS = this._endDate.getTime();
         while (startMS < endMS) {
             this._model.push({
                 date: new Date(startMS)
@@ -23,10 +24,10 @@ export default class CalenderModelGenerator {
         return this._model;
     }
 
-    ensurYear(year) {
-        let startMS = this._startDate.getMilliseconds();
-        let endMS = this._endDate.getMilliseconds();
-        let targetMS = new Date(year, 1).getMilliseconds();
+    ensureYear(year) {
+        let startMS = this._startDate.getTime();
+        let endMS = this._endDate.getTime();
+        let targetMS = new Date(year, 1).getTime();
         while (startMS > targetMS) {
             startMS -= Constants.MILLISECONDS_IN_A_DAY
             this._model.push({

@@ -4,7 +4,7 @@ export default class CalenderModelGenerator {
     constructor() {
         let currentDate = new Date();
         this._startDate = new Date(currentDate.getFullYear() - 1, 1, 1, 0, 0, 0)
-        this._endDate = new Date(currentDate.getFullYear() + 1, 1, 1, 0, 0, 0);
+        this._endDate = new Date(currentDate.getFullYear() + 10, 1, 1, 0, 0, 0);
         this._model = [];
         this._initialCompute();
     }

@@ -1,27 +1,48 @@
 import Constants from "../constants/Constants";
+import EventTypes from "../constants/EventTypes";
 
 const EventsList = {
     1454265000000: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }
         }, {
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.DINNER,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
+                startTS: 3424442,
+                endTS: 343535
             }
-        }]
+        },
+            {
+                eventType: EventTypes.LUNCH,
+                eventMeta: {
+                    name: "John Doe",
+                    birthdayTS: 2342343,
+                    startTS: 3424442,
+                    endTS: 343535
+                }
+            },
+            {
+                eventType: EventTypes.MEETING,
+                eventMeta: {
+                    name: "John Doe",
+                    birthdayTS: 2342343,
+                    startTS: 3424442,
+                    endTS: 343535
+                }
+            }]
     },
-    2: {
+    1503161468000: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }
@@ -30,8 +51,8 @@ const EventsList = {
     3: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }
@@ -40,8 +61,8 @@ const EventsList = {
     4: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }
@@ -50,8 +71,8 @@ const EventsList = {
     5: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }
@@ -60,8 +81,8 @@ const EventsList = {
     6: {
         lastUpdateTimeStamp: 908,
         meetings: [{
-            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
-            eventData: {
+            eventType: EventTypes.BIRTHDAY,
+            eventMeta: {
                 name: "John Doe",
                 birthdayTS: 2342343,
             }

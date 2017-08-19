@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {RecyclerListView, DataProvider, LayoutProvider} from "recyclerlistview";
-import {Text, View, StyleSheet, Dimensions} from "react-native";
+import {Text, View, StyleSheet, Dimensions, FlatList} from "react-native";
 import CalenderModelGenerator from "../data/CalenderModelGenerator";
 import EventsList from "../data/EventsList";
 import ListItemTypes from "../constants/ListItemTypes";
@@ -38,6 +38,11 @@ export default class CalenderVerticalList extends Component {
         }.bind(this)
     }
 
+    // _rowRenderer1 = (data) => {
+    //     data=data.item;
+    //     return <DayCalenderItem events={this.props.eventsList[data.date.getTime()]} date={data.date}/>
+    // };
+
     _rowRenderer = (type, data) => {
         return <DayCalenderItem events={this.props.eventsList[data.date.getTime()]} date={data.date}/>
     };
@@ -53,6 +58,9 @@ export default class CalenderVerticalList extends Component {
         return (<RecyclerListView style={this.props.style} layoutProvider={this._layoutProvider}
                                   dataProvider={this.props.dataProvider} forceNonDeterministicRendering={true}
                                   rowRenderer={this._rowRenderer} onEndReached={this._onEndReached}/>)
+        // return (<FlatList style={this.props.style} layoutProvider={this._layoutProvider} data={this.props.dataProvider._data}
+        //                           dataProvider={this.props.dataProvider} forceNonDeterministicRendering={true}
+        //                           renderItem={this._rowRenderer1} onEndReached={this._onEndReached}/>)
     }
 }
 

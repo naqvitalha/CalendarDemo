@@ -5,7 +5,7 @@ import CalenderDateViewTypes from "../constants/CalenderDateViewTypes";
 import CalenderViewCell from "./CalenderViewCell";
 import CalenderHelper from "../../shared/utils/CalenderHelper";
 
-const cellSideLength = Dimensions.get('window').width / 7;
+const cellSideLength = Dimensions.get('window').width / 7 - 0.00001;
 
 export default class CalenderView extends Component {
     constructor(props) {
@@ -31,6 +31,8 @@ export default class CalenderView extends Component {
             }
         );
         this._isScrolling = false;
+        this._lastYOffset = 0;
+        this._lastScrollDirection = "UP";
         this.state = {
             calenderOpacity: new Animated.Value(1),
             textOpacity: new Animated.Value(0),
@@ -60,6 +62,16 @@ export default class CalenderView extends Component {
         this._isScrolling = false;
         setTimeout(() => {
             if (!this._isScrolling) {
+                // const distanceFromSnapInterval = Math.ceil(this._lastYOffset) % Math.ceil(cellSideLength);
+                // if (distanceFromSnapInterval > 0) {
+                //     if (this._lastScrollDirection === "UP") {
+                //         this._recyclerRef.scrollToOffset(0, Math.ceil(this._lastYOffset) + Math.ceil(cellSideLength) - distanceFromSnapInterval, true);
+                //     }
+                //     else {
+                //         this._recyclerRef.scrollToOffset(0, Math.ceil(this._lastYOffset) -  distanceFromSnapInterval, true);
+                //     }
+                //     return;
+                // }
                 Animated.parallel([
                     Animated.timing(this.state.calenderOpacity, {
                         toValue: 1,
@@ -83,7 +95,7 @@ export default class CalenderView extends Component {
             this._isScrolling = true;
             Animated.parallel([
                 Animated.timing(this.state.calenderOpacity, {
-                    toValue: 0.5,
+                    toValue: 0.3,
                     duration: 300,
                     useNativeDriver: true,
                     easing: Easing.easeIn
@@ -98,6 +110,11 @@ export default class CalenderView extends Component {
         }
     };
 
+    _onScroll = (r, x, y) => {
+        this._lastScrollDirection = y > this._lastYOffset ? "UP" : "DOWN";
+        this._lastYOffset = y;
+    };
+
 
     render() {
         return (
@@ -105,11 +122,16 @@ export default class CalenderView extends Component {
                 <Animated.View style={{flex: 1, opacity: this.state.calenderOpacity}}>
                     <RecyclerListView layoutProvider={this._layoutProvider} dataProvider={this.props.dataProvider}
                                       rowRenderer={this._rowRenderer}
-                                      renderAheadOffset={300}
+                                      ref={(ref) => this._recyclerRef = ref}
+                                      //renderAheadOffset={600}
+                                      showsVerticalScrollIndicator={false}
                                       onVisibleIndexesChanged={this._handleVisibleIndexChanges}
                                       onScrollBeginDrag={this._handleScrollStart}
+                                      onScrollEndDrag={this._handleScrollEnd}
                                       onMomentumScrollBegin={this._handleScrollStart}
                                       onMomentumScrollEnd={this._handleScrollEnd}
+                                      onScroll={this._onScroll}
+
                     />
                 </Animated.View>
                 <Animated.View pointerEvents="box-none"

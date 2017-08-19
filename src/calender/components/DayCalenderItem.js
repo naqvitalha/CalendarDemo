@@ -22,7 +22,7 @@ export default class DayCalenderItem extends Component {
                 <View style={styles.separatorLine}/>
                 {events && events.meetings && events.meetings.length > 0 ?
                     events.meetings.map((event, index) => {
-                        return <EventRow eventData={event} key={index}/>
+                        return <EventRow eventData={event} date={this.props.date} key={index}/>
                     })
                     : <Text style={styles.noEventText}>No events</Text>
                 }

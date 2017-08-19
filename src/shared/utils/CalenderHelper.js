@@ -9,10 +9,16 @@ export default class CalenderHelper {
     static getDayName(date) {
         return days[date.getDay()];
     }
+
     static getMonthName(date) {
         return monthNames[date.getMonth()];
     }
+
     static getShortMonthName(date) {
         return shortMonthNames[date.getMonth()];
+    }
+
+    static getAllDays() {
+        return days;
     }
 }

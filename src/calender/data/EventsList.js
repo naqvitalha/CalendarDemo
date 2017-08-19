@@ -1,9 +1,15 @@
 import Constants from "../constants/Constants";
 
 const EventsList = {
-    1: {
+    1454265000000: {
         lastUpdateTimeStamp: 908,
         meetings: [{
+            eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
+            eventData: {
+                name: "John Doe",
+                birthdayTS: 2342343,
+            }
+        }, {
             eventType: Constants.EVENT_TYPE_BIRTHDAY_NAME,
             eventData: {
                 name: "John Doe",

@@ -36,6 +36,14 @@ export default class CalenderVerticalList extends Component {
             }
             dim.width = width;
         }.bind(this)
+
+        this._lastFirstVisibleIndex = -1;
+    }
+
+    scrollToIndex(index) {
+        if (this._recyclerRef) {
+            this._recyclerRef.scrollToIndex(index, false);
+        }
     }
 
     // _rowRenderer1 = (data) => {
@@ -54,9 +62,20 @@ export default class CalenderVerticalList extends Component {
         // });
     };
 
+    _handleVisibleIndexChanges = (all) => {
+        const firstVisibleIndex = all[0];
+        if (this._lastFirstVisibleIndex !== firstVisibleIndex) {
+            this._lastFirstVisibleIndex = firstVisibleIndex;
+            this.props.actions.updateSelectedDate(this.props.dataProvider.getDataForIndex(firstVisibleIndex).date, firstVisibleIndex, "CALENDER_VERTICAL_VIEW");
+        }
+    };
+
     render() {
         return (<RecyclerListView style={this.props.style} layoutProvider={this._layoutProvider}
-                                  dataProvider={this.props.dataProvider} forceNonDeterministicRendering={true}
+                                  ref={x =>this._recyclerRef = x}
+                                  onVisibleIndexesChanged={this._handleVisibleIndexChanges}
+                                  dataProvider={this.props.dataProvider}
+                                  forceNonDeterministicRendering={false}
                                   rowRenderer={this._rowRenderer} onEndReached={this._onEndReached}/>)
         // return (<FlatList style={this.props.style} layoutProvider={this._layoutProvider} data={this.props.dataProvider._data}
         //                           dataProvider={this.props.dataProvider} forceNonDeterministicRendering={true}
@@ -64,6 +83,4 @@ export default class CalenderVerticalList extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});

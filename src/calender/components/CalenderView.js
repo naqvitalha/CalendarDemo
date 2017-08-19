@@ -40,11 +40,17 @@ export default class CalenderView extends Component {
         }
     }
 
+    scrollToIndex(index) {
+        if (this._recyclerRef) {
+            this._recyclerRef.scrollToIndex(index, true);
+        }
+    }
 
-    _rowRenderer = (type, data) => {
+
+    _rowRenderer = (type, data, index) => {
         const date = data.date;
         const events = this.props.eventsList[date.getTime()];
-        return <CalenderViewCell date={date} events={events}/>
+        return <CalenderViewCell currentIndex = {index} actions={this.props.actions} selectedTimeStamp={this.props.selectedTimeStamp} date={date} events={events}/>
 
     };
 

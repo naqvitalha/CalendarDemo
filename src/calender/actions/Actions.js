@@ -13,6 +13,14 @@ const Actions = {
                 }
             }
         });
+    },
+    updateSelectedDate(date, selectedIndex, origin){
+        this.dispatch({
+            type: ActionTypes.CHANGE_SELECTED_DATE,
+            selectedTimeStamp: date.getTime(),
+            selectedIndex: selectedIndex,
+            origin: origin
+        });
     }
 };
 export default Actions;

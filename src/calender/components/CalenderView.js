@@ -97,6 +97,7 @@ export default class CalenderView extends Component {
     };
 
     _handleScrollStart = () => {
+        this.props.onScrollBeginDrag();
         if (!this._isScrolling) {
             this._isScrolling = true;
             Animated.parallel([
@@ -129,7 +130,7 @@ export default class CalenderView extends Component {
                     <RecyclerListView layoutProvider={this._layoutProvider} dataProvider={this.props.dataProvider}
                                       rowRenderer={this._rowRenderer}
                                       ref={(ref) => this._recyclerRef = ref}
-                                      //renderAheadOffset={600}
+                                      renderAheadOffset={100}
                                       showsVerticalScrollIndicator={false}
                                       onVisibleIndexesChanged={this._handleVisibleIndexChanges}
                                       onScrollBeginDrag={this._handleScrollStart}

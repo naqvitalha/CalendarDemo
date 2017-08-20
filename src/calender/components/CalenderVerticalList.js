@@ -71,12 +71,15 @@ export default class CalenderVerticalList extends Component {
     };
 
     render() {
-        return (<RecyclerListView style={this.props.style} layoutProvider={this._layoutProvider}
-                                  ref={x =>this._recyclerRef = x}
-                                  onVisibleIndexesChanged={this._handleVisibleIndexChanges}
-                                  dataProvider={this.props.dataProvider}
-                                  forceNonDeterministicRendering={false}
-                                  rowRenderer={this._rowRenderer} onEndReached={this._onEndReached}/>)
+        return (
+            <RecyclerListView layoutProvider={this._layoutProvider}
+                              ref={x => this._recyclerRef = x}
+                              onVisibleIndexesChanged={this._handleVisibleIndexChanges}
+                              dataProvider={this.props.dataProvider}
+                              onScrollBeginDrag={this.props.onScrollBeginDrag}
+                              forceNonDeterministicRendering={false}
+                              rowRenderer={this._rowRenderer} onEndReached={this._onEndReached}/>
+        )
         // return (<FlatList style={this.props.style} layoutProvider={this._layoutProvider} data={this.props.dataProvider._data}
         //                           dataProvider={this.props.dataProvider} forceNonDeterministicRendering={true}
         //                           renderItem={this._rowRenderer1} onEndReached={this._onEndReached}/>)

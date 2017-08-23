@@ -1,38 +1,43 @@
 import React, {Component} from 'react';
 import {Dimensions, Text, View, Animated, Easing, StyleSheet} from "react-native";
-import {RecyclerListView, LayoutProvider} from "recyclerlistview";
+import {RecyclerListView, DataProvider, LayoutProvider} from "recyclerlistview";
 import CalenderDateViewTypes from "../constants/CalenderDateViewTypes";
 import CalenderViewCell from "./CalenderViewCell";
 import CalenderHelper from "../../shared/utils/CalenderHelper";
+import Constants from "../constants/Constants";
 
-const cellSideLength = Dimensions.get('window').width / 7 - 0.00001;
 
 export default class CalenderView extends Component {
     constructor(props) {
         super(props);
         this._layoutProvider = new LayoutProvider(
             (index) => {
-                return index ? CalenderDateViewTypes.REST_ITEMS : CalenderDateViewTypes.FIRST_ITEM;
+                return index ? this._dataProvider.getDataForIndex(index).date.getDate() : CalenderDateViewTypes.FIRST_ITEM;
             },
             (type, dim) => {
                 switch (type) {
                     case CalenderDateViewTypes.FIRST_ITEM:
-                        dim.width = cellSideLength;
-                        dim.height = cellSideLength;
-                        break;
-                    case CalenderDateViewTypes.REST_ITEMS:
-                        dim.width = cellSideLength;
-                        dim.height = cellSideLength;
+                        dim.width = Constants.CELL_SIDE_LENGTH;
                         break;
                     default:
-                        dim.width = 0;
-                        dim.height = 0;
+                        dim.width = Constants.CELL_SIDE_LENGTH;
                 }
+                dim.height = Constants.CELL_SIDE_LENGTH;
             }
         );
+
+        this._dataProvider = new DataProvider(
+            function rowHasChanged(r1, r2) {
+                return false; //r1.date.getTime() !== r2.date.getTime()
+            }.bind(this)
+        ).cloneWithRows(props.dateModel),
+
         this._isScrolling = false;
         this._lastYOffset = 0;
+
+        //Would've been used for snap scrolling, not doing it now though
         this._lastScrollDirection = "UP";
+
         this.state = {
             calenderOpacity: new Animated.Value(1),
             textOpacity: new Animated.Value(0),
@@ -40,9 +45,15 @@ export default class CalenderView extends Component {
         }
     }
 
+    shouldComponentUpdate(newProps, newState) {
+        return this.state.monthName !== newState.monthName ||
+            newProps.eventsList !== this.props.eventsList ||
+            newProps.selectedTimeStamp !== this.props.selectedTimeStamp;
+    }
+
     scrollToIndex(index) {
         if (this._recyclerRef) {
-            this._recyclerRef.scrollToIndex(index, true);
+            this._recyclerRef.scrollToIndex(index, false);
         }
     }
 
@@ -50,13 +61,14 @@ export default class CalenderView extends Component {
     _rowRenderer = (type, data, index) => {
         const date = data.date;
         const events = this.props.eventsList[date.getTime()];
-        return <CalenderViewCell currentIndex = {index} actions={this.props.actions} selectedTimeStamp={this.props.selectedTimeStamp} date={date} events={events}/>
+        return <CalenderViewCell currentIndex={index} actions={this.props.actions}
+                                 selectedTimeStamp={this.props.selectedTimeStamp} date={date} events={events}/>
 
     };
 
     _handleVisibleIndexChanges = (all, now, notNow) => {
         const relevantIndex = Math.ceil(all.length / 2);
-        const data = this.props.dataProvider.getDataForIndex(all[relevantIndex]);
+        const data = this._dataProvider.getDataForIndex(all[relevantIndex]);
         const newMonth = CalenderHelper.getMonthName(data.date);
         const yearText = new Date().getFullYear() !== data.date.getFullYear() ? ", " + data.date.getFullYear() : "";
         if (newMonth !== this.state.monthName) {
@@ -68,6 +80,7 @@ export default class CalenderView extends Component {
         this._isScrolling = false;
         setTimeout(() => {
             if (!this._isScrolling) {
+                //Skipping snap scrolling for now
                 // const distanceFromSnapInterval = Math.ceil(this._lastYOffset) % Math.ceil(cellSideLength);
                 // if (distanceFromSnapInterval > 0) {
                 //     if (this._lastScrollDirection === "UP") {
@@ -93,7 +106,7 @@ export default class CalenderView extends Component {
                     })
                 ]).start();
             }
-        }, 100);
+        }, 300);
     };
 
     _handleScrollStart = () => {
@@ -102,7 +115,7 @@ export default class CalenderView extends Component {
             this._isScrolling = true;
             Animated.parallel([
                 Animated.timing(this.state.calenderOpacity, {
-                    toValue: 0.3,
+                    toValue: 0.2,
                     duration: 300,
                     useNativeDriver: true,
                     easing: Easing.easeIn
@@ -127,10 +140,12 @@ export default class CalenderView extends Component {
         return (
             <View style={{flex: 1}}>
                 <Animated.View style={{flex: 1, opacity: this.state.calenderOpacity}}>
-                    <RecyclerListView layoutProvider={this._layoutProvider} dataProvider={this.props.dataProvider}
+                    <RecyclerListView layoutProvider={this._layoutProvider} dataProvider={this._dataProvider}
                                       rowRenderer={this._rowRenderer}
                                       ref={(ref) => this._recyclerRef = ref}
-                                      renderAheadOffset={100}
+                                      renderAheadOffset={300}
+                                      //disableRecycling={true}
+                                      initialRenderIndex={this.props.initialRenderIndex}
                                       showsVerticalScrollIndicator={false}
                                       onVisibleIndexesChanged={this._handleVisibleIndexChanges}
                                       onScrollBeginDrag={this._handleScrollStart}
@@ -156,6 +171,7 @@ const styles = StyleSheet.create({
     },
     monthText: {
         fontSize: 18,
+        backgroundColor: "transparent"
     },
     textContainer: {
         position: "absolute",

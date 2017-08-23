@@ -1,11 +1,23 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import CalenderHelper from "../../shared/utils/CalenderHelper";
-import Constants from "../constants/Constants";
+import CalenderHelper from '../../shared/utils/CalenderHelper';
+import Constants from '../constants/Constants';
 
 export default class CalenderViewCell extends Component {
     shouldComponentUpdate(newProps) {
-        return true;//this.props.date.getTime() !== newProps.date.getTime() ;//|| this.props.events.lastUpdateTimeStamp !== newProps.events.lastUpdateTimeStamp;
+        return (
+            this.props.date.getMonth() !== newProps.date.getMonth() ||
+            this._hasEvents(this.props.events) !== this._hasEvents(newProps.events) ||
+            this._isSelected(this.props) !== this._isSelected(newProps)
+        );
+    }
+
+    _hasEvents(events) {
+        return events && events.meetings.length > 0;
+    }
+
+    _isSelected(props) {
+        return props.selectedTimeStamp === props.date.getTime();
     }
 
     _checkIfCurrentDate() {
@@ -16,27 +28,31 @@ export default class CalenderViewCell extends Component {
     }
 
     _handleOnPress = () => {
-        this.props.actions.updateSelectedDate(this.props.date, this.props.currentIndex, "CALENDER_VIEW");
+        this.props.actions.updateSelectedDate(this.props.date, this.props.currentIndex, 'CALENDER_VIEW');
     };
 
     render() {
         const isCurrentDate = this._checkIfCurrentDate();
-        const {date, events, selectedTimeStamp} = this.props;
-        const isSelectedDate = selectedTimeStamp === date.getTime();
-        const backgroundStyle = {backgroundColor: date.getMonth() % 2 === 0 ? "white" : "#d3d3d3"};
-        const textStyle = {color: isCurrentDate ? "blue" : "black"};
-
+        const {date, events} = this.props;
+        const isSelectedDate = this._isSelected(this.props);
+        const backgroundStyle = {backgroundColor: date.getMonth() % 2 === 0 ? 'white' : Constants.VERY_LIGH_GREY};
+        const textStyle = isSelectedDate ? {color: 'white'} : {color: isCurrentDate ? Constants.BLUE_COLOR : 'black'};
+        let monthText = 'NA', monthOpacity = 0;
+        if (!isSelectedDate && date.getDate() === 1) {
+            monthOpacity = 1;
+            monthText = CalenderHelper.getShortMonthName(date);
+        }
         return (
             <TouchableWithoutFeedback onPress={this._handleOnPress} style={{flex: 1}}>
                 <View style={[backgroundStyle, styles.container]}>
-                    {isSelectedDate ? <View style={styles.circleContainer}>
-                        <View style={styles.circle}/>
-                    </View> : null}
-                    <Text
-                        style={[textStyle, {opacity: !isSelectedDate && date.getDate() === 1 ? 1 : 0}, styles.monthText]}>{CalenderHelper.getShortMonthName(date)}</Text>
+                    {isSelectedDate
+                        ? <View style={styles.circleContainer}>
+                              <View style={styles.circle} />
+                          </View>
+                        : null}
+                    <Text style={[textStyle, {opacity: monthOpacity}, styles.monthText]}>{monthText}</Text>
                     <Text style={[textStyle, styles.dateText]}>{date.getDate()}</Text>
-                    <View
-                        style={[{opacity: !isSelectedDate && events && events.meetings.length > 0 ? 1 : 0}, styles.dot]}/>
+                    <View style={[{opacity: !isSelectedDate && this._hasEvents(events) ? 1 : 0}, styles.dot]} />
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -44,39 +60,41 @@ export default class CalenderViewCell extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flex: 1
     },
     dot: {
         borderRadius: 2.5,
-        backgroundColor: "blue",
+        backgroundColor: Constants.BLUE_COLOR,
         width: 5,
         height: 5,
         marginTop: 4,
-        marginBottom: 3
+        marginBottom: 4
     },
     monthText: {
-        fontSize: 10,
-        marginTop: 5,
+        fontSize: 8,
+        marginTop: 5
     },
     dateText: {
-        fontSize: 14
+        fontSize: 14,
+        backgroundColor: 'transparent',
+        marginTop: -3
     },
     circleContainer: {
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     circle: {
-        height: 30,
-        width: 30,
-        borderRadius: 15,
-        backgroundColor: "blue"
+        height: Constants.CELL_SIDE_LENGTH - 16,
+        width: Constants.CELL_SIDE_LENGTH - 16,
+        borderRadius: (Constants.CELL_SIDE_LENGTH - 16) / 2,
+        backgroundColor: Constants.BLUE_COLOR
     }
 });

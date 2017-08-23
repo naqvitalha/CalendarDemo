@@ -9,7 +9,11 @@ export default class DayCalenderItem extends Component {
         date: PropTypes.instanceOf(Date),
         events: PropTypes.object
     };
-    static defaultProps = {
+    static defaultProps = {};
+
+    shouldComponentUpdate(newProps) {
+        return this.props.date.getTime() !== newProps.date.getTime() ||
+            this.props.events !== newProps.events;
     }
 
     render() {
@@ -22,7 +26,7 @@ export default class DayCalenderItem extends Component {
                 <View style={styles.separatorLine}/>
                 {events && events.meetings && events.meetings.length > 0 ?
                     events.meetings.map((event, index) => {
-                        return <EventRow eventData={event} date={this.props.date} key={index}/>
+                        return <EventRow eventData={event} date={date} key={index}/>
                     })
                     : <Text style={styles.noEventText}>No events</Text>
                 }

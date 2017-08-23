@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image} from "react-native";
 import CalenderHelper from "../../shared/utils/CalenderHelper";
+import Constants from "../constants/Constants";
 
 export default class Header extends Component {
     shouldComponentUpdate(newProps){
@@ -17,7 +18,7 @@ export default class Header extends Component {
                 </View>
                 <View style={styles.textContainer}>
                     {CalenderHelper.getAllDays().map((day, index) => {
-                        return <Text style={styles.textDay} key = {index}>{day[0]}</Text>
+                        return <Text style={[styles.textDay,{color: index == 0 || index == 6 ? "#d3d3d3": "white"}]} key = {index}>{day[0]}</Text>
                     })}
                 </View>
             </View>);
@@ -25,18 +26,20 @@ export default class Header extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-
+        backgroundColor: Constants.BLUE_COLOR,
     },
     innerContainer: {
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
         height: 56,
-        backgroundColor: "blue",
+
     },
     textContainer:{
         flexDirection: "row",
-        justifyContent:"space-around"
+        justifyContent:"space-around",
+        height: 19,
+
     },
     image: {
         height: 17,
@@ -49,8 +52,10 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     textDay:{
-        fontSize:14,
+        fontSize:11,
         flex: 1,
-        textAlign:"center"
+        textAlign:"center",
+        color:"white",
+        fontWeight:"400"
     }
 });

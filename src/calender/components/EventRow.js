@@ -12,14 +12,12 @@ EventImages[EventTypes.DINNER] = require("../../../assets/dinner_icon.png");
 export {EventImages};
 
 export default class EventRow extends Component {
-    static propTypes = {};
-
     constructor(props) {
         super(props);
     }
 
-    _renderEventImage() {
-
+    shouldComponentUpdate(newProps) {
+        return this.props.eventData !== newProps.eventData;
     }
 
     _renderTimeText() {
@@ -52,17 +50,18 @@ export default class EventRow extends Component {
     }
 
     render() {
+        console.log("Event render");
+        const eventTitle = this.props.eventData.eventType + " with " + this.props.eventData.eventMeta.name;
         return (<View style={styles.container}>
             <View style={styles.timeSectionContainer}>
                 {this._renderTimeText()}
                 {this._renderDurationText()}
             </View>
             {this._renderEventImage()}
-            <Image></Image>
             <View style={styles.detailContainer}>
-                <Text>Dinner with John Doe</Text>
+                <Text>{eventTitle}</Text>
                 <View>
-                    <Image></Image><Text>Bangalore, India</Text>
+                    <Text>Bangalore, India</Text>
                 </View>
             </View>
         </View>)
@@ -71,9 +70,10 @@ export default class EventRow extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        height: 70,
-        backgroundColor: "#dfdfdf",
-        alignItems: "center"
+        height: 80,
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderColor: "#d3d3d3"
     },
     timeSectionContainer: {
         paddingLeft: 16,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25
     },
-    detailContainer:{
+    detailContainer: {
         marginLeft: 12,
     }
 });

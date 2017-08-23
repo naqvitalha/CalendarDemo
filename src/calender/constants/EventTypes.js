@@ -1,7 +1,7 @@
 const EventTypes = Object.freeze({
-    "BIRTHDAY": 0,
-    "DINNER": 1,
-    "LUNCH": 2,
-    "MEETING": 3
+    "BIRTHDAY": "Birthday",
+    "DINNER": "Dinner",
+    "LUNCH": "Lunch",
+    "MEETING": "Meeting"
 });
 export default EventTypes;

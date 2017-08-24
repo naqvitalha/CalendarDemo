@@ -29,6 +29,7 @@ you scroll. This is due to a bug in RecyclerListView, [#34](https://github.com/F
 ## The bad
 - CalenderView scroll is not that good, data provider needs to have a valid rowHasChanged method.
 - Forgot to add calender offset adjustment for CalenderView, simply slipped my mind.
+- Didn't get time to add unit tests and proptype definitions.
 
 ## About Dev
 Talha Naqvi is a Senior Software Development Engineer at Flipkart, correcting leading the cross platform team. He has worked

@@ -24,6 +24,7 @@ const maxTopOffset = Constants.CELL_SIDE_LENGTH * 5 + 75;
  *
  * Now as any of the list is scroll we track visible index to figure out current selected date which is maintained in
  * redux store. Both lists share the same state thus changing selection on one will affect the other
+ * On change both lists simply jump to the right index, recycler view does the scroll optimally by itself
  */
 
 export default class CalenderRoot extends BaseReduxRootComponent {

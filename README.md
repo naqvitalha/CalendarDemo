@@ -33,4 +33,5 @@ you scroll. This is due to a bug in RecyclerListView, [#34](https://github.com/F
 ## About Dev
 Talha Naqvi is a Senior Software Development Engineer at Flipkart, correcting leading the cross platform team. He has worked
 on Windows and Android in the past and is currently pursuing React Native. A performance enthusiast and most of the work
-profile is also around performance.
+profile is also around performance. The current goal is to solve cross platform development without compromising user
+experience or performance.

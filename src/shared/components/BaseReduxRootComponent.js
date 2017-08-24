@@ -11,11 +11,12 @@ class BaseReduxRootComponent extends React.Component {
         if (!this.reducerList) {
             this.reducerList = [];
         }
-        reducers.forEach((r) => {
+        reducers.forEach(r => {
             this.reducerList.push(r);
         }, this);
     }
 
+    //Passes an action to all reducers and expects a finalized state in the end
     dispatch(action) {
         if (this.reducerList && this.state) {
             let length = this.reducerList.length;
@@ -25,7 +26,7 @@ class BaseReduxRootComponent extends React.Component {
             }
             this.setState((prevState, props) => {
                 return lastState;
-            })
+            });
         }
     }
 
@@ -43,6 +44,5 @@ class BaseReduxRootComponent extends React.Component {
     getAllActions() {
         return this.actionMap;
     }
-
 }
 export default BaseReduxRootComponent;

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import {Text, View, StyleSheet} from 'react-native';
 import CalenderHelper from '../../shared/utils/CalenderHelper';
 import EventRow from "./EventRow";
+import Constants from "../constants/Constants";
 
 export default class DayCalenderItem extends Component {
     static propTypes = {
         date: PropTypes.instanceOf(Date),
         events: PropTypes.object
     };
-    static defaultProps = {};
 
+    //only rerender if time has changed or events
     shouldComponentUpdate(newProps) {
         return this.props.date.getTime() !== newProps.date.getTime() ||
             this.props.events !== newProps.events;
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     },
     separatorLine: {
         height: 1,
-        backgroundColor: "#d3d3d3"
+        backgroundColor: Constants.LIGHT_GREY
     },
     headerText: {
         fontWeight: '500',

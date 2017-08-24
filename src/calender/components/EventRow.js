@@ -11,6 +11,10 @@ EventImages[EventTypes.DINNER] = require("../../../assets/dinner_icon.png");
 
 export {EventImages};
 
+/***
+ * Represents all the events, currently only birthday, lunch, dinner and meeting
+ */
+
 export default class EventRow extends Component {
     constructor(props) {
         super(props);

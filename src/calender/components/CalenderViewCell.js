@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {Text, View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import CalenderHelper from '../../shared/utils/CalenderHelper';
 import Constants from '../constants/Constants';
 
+/***
+ * Calender View Cell that shows date, month for first of the month and dots to represent if any event is present
+ * It also turns blue if selected
+ */
+
 export default class CalenderViewCell extends Component {
+    //Only rerender if selected state has changed or month change or if event presence has changed
     shouldComponentUpdate(newProps) {
         return (
             this.props.date.getMonth() !== newProps.date.getMonth() ||
@@ -27,6 +33,7 @@ export default class CalenderViewCell extends Component {
         return timeDiff >= 0 && timeDiff < Constants.MILLISECONDS_IN_A_DAY;
     }
 
+    //Calls action in order to update the selected date in state tree, index is also passed for optimization reasons
     _handleOnPress = () => {
         this.props.actions.updateSelectedDate(this.props.date, this.props.currentIndex, 'CALENDER_VIEW');
     };
@@ -37,6 +44,8 @@ export default class CalenderViewCell extends Component {
         const isSelectedDate = this._isSelected(this.props);
         const backgroundStyle = {backgroundColor: date.getMonth() % 2 === 0 ? 'white' : Constants.VERY_LIGH_GREY};
         const textStyle = isSelectedDate ? {color: 'white'} : {color: isCurrentDate ? Constants.BLUE_COLOR : 'black'};
+
+        //Setting to NA in all invisible cases to prevent text relayouts
         let monthText = 'NA', monthOpacity = 0;
         if (!isSelectedDate && date.getDate() === 1) {
             monthOpacity = 1;

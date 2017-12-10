@@ -11,8 +11,7 @@ react-native run-ios
 ```
 
 ## Libraries used
-[RecyclerListView](https://github.com/Flipkart/ReactEssentials) - A ListView that recycles views which makes is perfect for rendering large sets of data. Luckily, this was
-built by the me and was open sourced recently so, I was able to leverage it. It also has `initialRenderIndex` support which helps.
+[RecyclerListView](https://github.com/Flipkart/ReactEssentials) - A ListView that recycles views which makes is perfect for rendering large sets of data. It also has `initialRenderIndex` support which helps.
 
 ## Known issues
 - The shared apk will work fine but if you run the code the first selected date might be off by 1 value. It gets corrected if

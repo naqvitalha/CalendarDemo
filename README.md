@@ -3,7 +3,7 @@ Demo of a simple calendar app built using React native.
 
 ## How to run?
 ```
-cd CalenderDemo
+cd CalendarDemo
 npm install
 
 react-native run-android

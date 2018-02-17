@@ -7,7 +7,7 @@ export default class CalenderModelGenerator {
         let currentDate = new Date();
 
         //Computing dates of day start
-        this._startDate = new Date(currentDate.getFullYear() - 2, 1, 1, 0, 0, 0);
+        this._startDate = new Date(2015, 1, 1, 0, 0, 0);
         this._endDate = new Date(currentDate.getFullYear() + 2, 1, 1, 0, 0, 0);
 
         this._model = [];
